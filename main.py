@@ -33,14 +33,7 @@ def parse_flags():
         parser.print_help()
         sys.exit(1)
 
-    flags = parser.parse_args()
-
-    #parser.error('Path needs to be specified')
-
-    #if flags.path == '':
-    #    parser.error('Path needs to be specified')
-
-    return flags
+    return parser.parse_args()
 
 
 def open_file(path):
