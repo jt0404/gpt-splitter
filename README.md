@@ -11,7 +11,7 @@ $ pip install -r requirements.txt
 ```
 
 ```console
-$ python main.py --help
+$ python main.py 
 
 usage: main.py [-h] [--display | --no-display] [--path PATH] [--action ACTION] [--size SIZE]
 
