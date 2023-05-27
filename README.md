@@ -24,5 +24,7 @@ options:
   --size SIZE           size of a single message (default: 4000)
 ```
 
+## Example
+
 ![Alt text](example.gif)
 
