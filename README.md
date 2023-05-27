@@ -4,6 +4,10 @@ This tool can help ChatGPT read big texts
 by splitting them into chunks of certain size. 
 For example GPT3.5 can read around 4000 characters in a single message. 
 
+## Example
+
+![Alt text](example.gif)
+
 ## Usage
 
 ```console
@@ -23,8 +27,4 @@ options:
   --action ACTION       action for ChatGPT to perform after sending all messages (default: summarize all text)
   --size SIZE           size of a single message (default: 4000)
 ```
-
-## Example
-
-![Alt text](example.gif)
 
