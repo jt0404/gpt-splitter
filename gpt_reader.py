@@ -91,21 +91,32 @@ if __name__ == '__main__':
         if display:
             print(msg)
             print()
-        if save:
-            print(f'appending to a file: {save_path}')
-            write_file(save_path, msg)
 
         print(f'Press \'c\' to copy MESSAGE {msg_idx} to clipboard and go to the next message')
         print('Press \'q\' to exit')
+
 
         key = input()
 
         if key == 'c':
             pyperclip.copy(msg)
             print(f'\nMessage {msg_idx} copied to clipboard')
+
+            if save:
+                print(f'appending to a file: {save_path}')
+
+                if msg_idx == 1:
+                    msg = '\n' + msg
+                elif msg_idx > 1:
+                    msg = '\n\n' + msg
+
+                write_file(save_path, msg)
+
             if last_msg:
                 break
+
             msg_idx += 1
+
             try:
                 msg = (
                         msg_prefix(last_msg, msg_idx)
