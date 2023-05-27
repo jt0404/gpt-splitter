@@ -12,7 +12,7 @@ $ pip install -r requirements.txt
 
 ```console
 $ python main.py --help
-```
+
 usage: main.py [-h] [--display | --no-display] [--path PATH] [--action ACTION] [--size SIZE]
 
 options:
@@ -22,3 +22,4 @@ options:
   --path PATH           path to the file (default: )
   --action ACTION       action for ChatGPT to perform after sending all messages (default: summarize all text)
   --size SIZE           size of a single message (default: 4000)
+```
