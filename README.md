@@ -17,10 +17,11 @@ $ pip install -r requirements.txt
 ```console
 $ python gpt_reader.py 
 
-usage: gpt_reader.py [-h] [--display | --no-display] [--path PATH] [--action ACTION] [--size SIZE]
+usage: gpt_reader.py [-h] [--save | --no-save] [--display | --no-display] [--path PATH] [--action ACTION] [--size SIZE]
 
 options:
   -h, --help            show this help message and exit
+  --save, --no-save     save all the messages to <path/filename_chunked.txt> (default: False)
   --display, --no-display
                         display messages while iterating through them (default: False)
   --path PATH           path to the file (default: )

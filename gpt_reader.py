@@ -11,6 +11,11 @@ import argparse
 def parse_flags():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument('--save', 
+                        help='save all the messages to <path/filename_chunked.txt>', 
+                        action=argparse.BooleanOptionalAction,
+                        default=False,
+                        type=bool)
     parser.add_argument('--display', 
                         help='display messages while iterating through them', 
                         action=argparse.BooleanOptionalAction,
@@ -52,12 +57,20 @@ def msg_prefix(last_msg, msg_idx):
     return f'==================== MESSAGE {msg_idx} ====================\n'
 
 
+def write_file(path, content):
+    with open(path, 'a') as f:
+        f.write(content)
+
+
 if __name__ == '__main__':
     flags = parse_flags()
-    f = open_file(flags.path)
+    path = flags.path
     action = flags.action
     msg_size = flags.size
     display = flags.display 
+    save = flags.save
+    save_path = path.split('.')[0] + '_chunked.txt'
+    f = open_file(path)
     msg_idx = 0
     msg_iter = iter(lambda: f.read(msg_size) , '')
     msg = (
@@ -73,11 +86,14 @@ if __name__ == '__main__':
         + 'which will tell you what to do, are you ready?\n'
     )
     last_msg = False
-
+         
     while True:
         if display:
             print(msg)
             print()
+        if save:
+            print(f'appending to a file: {save_path}')
+            write_file(save_path, msg)
 
         print(f'Press \'c\' to copy MESSAGE {msg_idx} to clipboard and go to the next message')
         print('Press \'q\' to exit')
