@@ -102,7 +102,7 @@ if __name__ == '__main__':
             print(f'\nMessage {msg_idx} copied to clipboard')
 
             if save:
-                print(f'appending to a file: {save_path}')
+                print(f'Message {msg_idx} appended to a file: {save_path}')
 
                 if msg_idx == 1:
                     msg = '\n' + msg
