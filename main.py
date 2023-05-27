@@ -1,0 +1,107 @@
+# This tool can help ChatGPT read big texts
+# by splitting them into chunks of certain size. 
+# For example GPT3.5 can read around 4000 characters in a single message. 
+
+
+import sys
+import pyperclip
+import argparse
+
+
+def parse_flags():
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('--display', 
+                        help='display messages while iterating through them', 
+                        action=argparse.BooleanOptionalAction,
+                        default=False,
+                        type=bool)
+    parser.add_argument('--path', 
+                        help='path to the file', 
+                        default='',
+                        type=str)
+    parser.add_argument('--action', 
+                        help='action for ChatGPT to perform after sending all messages', 
+                        default='summarize all text',
+                        type=str)
+    parser.add_argument('--size', 
+                        help='size of a single message', 
+                        default=4000,
+                        type=int)
+
+    flags = parser.parse_args()
+
+    if flags.path == '':
+        parser.error('Path needs to be specified')
+
+    return flags
+
+
+def open_file(path):
+    f = None
+    try:
+        f = open(flags.path, 'r')
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+    return f
+
+
+def msg_prefix(last_msg, msg_idx):
+    if last_msg:
+        return f'==================== MESSAGE {msg_idx} -> LAST ====================\n'
+    return f'==================== MESSAGE {msg_idx} ====================\n'
+
+
+if __name__ == '__main__':
+    flags = parse_flags()
+    f = open_file(flags.path)
+    action = flags.action
+    msg_size = flags.size
+    display = flags.display 
+    msg_idx = 0
+    msg_iter = iter(lambda: f.read(msg_size) , '')
+    msg = (
+        f'==================== MESSAGE 0 ====================\n'
+        + 'Hi I will give you a text to read splitted into multiple messages in the form of\n'
+        + '==================== MESSAGE n ====================\n'
+        + '\'message\'\n'
+        + 'last message is going to have a form of\n'
+        + '==================== MESSAGE n -> LAST ====================\n'
+        + '\'message\'\n'
+        + 'which will tell you what to do, are you ready?'
+    )
+    last_msg = False
+
+    while True:
+        if display:
+            print(msg)
+            print()
+
+        print(f'Press \'c\' to copy MESSAGE {msg_idx} to clipboard and go to the next message')
+        print('Press \'q\' to exit')
+
+        key = input()
+
+        if key == 'c':
+            pyperclip.copy(msg)
+            print(f'\nMessage {msg_idx} copied to clipboard')
+            msg_idx += 1
+            try:
+                msg = msg_prefix(last_msg, msg_idx) + '...' +  next(msg_iter) + '...'
+            except Exception:
+                if last_msg:
+                    break
+                last_msg = True
+                msg = msg_prefix(last_msg, msg_idx) + f'Ok that was the last message, now can you {action}?'
+        elif key == 'q':
+            print('\nExiting')
+            break
+        else:
+            print('\nUnrecognized key')
+
+        print()
+
+    f.close()
+
+
