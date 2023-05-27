@@ -95,7 +95,6 @@ if __name__ == '__main__':
         print(f'Press \'c\' to copy MESSAGE {msg_idx} to clipboard and go to the next message')
         print('Press \'q\' to exit')
 
-
         key = input()
 
         if key == 'c':
