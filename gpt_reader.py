@@ -1,8 +1,3 @@
-# This tool can help ChatGPT read big texts
-# by splitting them into chunks of certain size. 
-# For example GPT3.5 can read around 4000 characters in a single message. 
-
-
 import sys
 import pyperclip
 import argparse
