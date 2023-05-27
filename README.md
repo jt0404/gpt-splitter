@@ -23,3 +23,6 @@ options:
   --action ACTION       action for ChatGPT to perform after sending all messages (default: summarize all text)
   --size SIZE           size of a single message (default: 4000)
 ```
+
+![Alt text](example.gif)
+

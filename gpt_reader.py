@@ -61,14 +61,16 @@ if __name__ == '__main__':
     msg_idx = 0
     msg_iter = iter(lambda: f.read(msg_size) , '')
     msg = (
-        f'==================== MESSAGE 0 ====================\n'
+        '==================== MESSAGE 0 ====================\n'
         + 'Hi I will give you a text to read splitted into multiple messages in the form of\n'
         + '==================== MESSAGE n ====================\n'
         + '\'message\'\n'
+        + '\nDONT RESPOND TO THIS MESSAGE YET\n'
         + 'last message is going to have a form of\n'
         + '==================== MESSAGE n -> LAST ====================\n'
         + '\'message\'\n'
-        + 'which will tell you what to do, are you ready?'
+        + '\nRESPOND TO THIS MESSAGE NOW\n'
+        + 'which will tell you what to do, are you ready?\n'
     )
     last_msg = False
 
@@ -85,14 +87,24 @@ if __name__ == '__main__':
         if key == 'c':
             pyperclip.copy(msg)
             print(f'\nMessage {msg_idx} copied to clipboard')
+            if last_msg:
+                break
             msg_idx += 1
             try:
-                msg = msg_prefix(last_msg, msg_idx) + '...' +  next(msg_iter) + '...'
-            except Exception:
-                if last_msg:
-                    break
+                msg = (
+                        msg_prefix(last_msg, msg_idx)
+                        + '...' 
+                        +  next(msg_iter) 
+                        + '...'
+                        + '\n\nDONT RESPOND TO THIS MESSAGE YET'
+                      )
+            except:
                 last_msg = True
-                msg = msg_prefix(last_msg, msg_idx) + f'Ok that was the last message, now can you {action}?'
+                msg = (
+                        msg_prefix(last_msg, msg_idx)
+                        + f'Ok that was the last message, now can you {action}?'
+                        + '\n\nRESPOND TO THIS MESSAGE NOW'
+                      )
         elif key == 'q':
             print('\nExiting')
             break
