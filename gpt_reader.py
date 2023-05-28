@@ -1,13 +1,14 @@
 import sys
 import pyperclip
 import argparse
+import os
 
 
 def parse_flags():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--save', 
-                        help='save all the messages to <path/filename_chunked.txt>', 
+                        help='save all the messages to <filename.gptr>', 
                         action=argparse.BooleanOptionalAction,
                         default=False,
                         type=bool)
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     msg_size = flags.size
     display = flags.display 
     save = flags.save
-    save_path = path.split('.')[0] + '_chunked.txt'
+    save_path = os.path.basename(path) + '.gptr'
     f = open_file(path)
     msg_idx = 0
     msg_iter = iter(lambda: f.read(msg_size) , '')
