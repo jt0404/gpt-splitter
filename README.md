@@ -21,7 +21,7 @@ usage: gpt_reader.py [-h] [--save | --no-save] [--display | --no-display] [--pat
 
 options:
   -h, --help            show this help message and exit
-  --save, --no-save     save all the messages to <path/filename_chunked.txt> (default: False)
+  --save, --no-save     save all the messages to <filename.gptr> (default: False)
   --display, --no-display
                         display messages while iterating through them (default: False)
   --path PATH           path to the file (default: )
