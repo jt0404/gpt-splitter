@@ -42,7 +42,7 @@ def read_input_file(path):
         return open(path, 'r').read()
     except Exception as e:
         print(e)
-        sys.exit(2)
+        sys.exit(4)
 
 
 def open_output_file(save, save_path):
@@ -87,7 +87,6 @@ def format_msg(msg, msg_idx, action, last_msg):
     if last_msg:
         return (
             f'==================== MESSAGE {msg_idx} -> LAST ====================\n'
-            #+ f'...{msg}...\n'
             + f'Okay that was the last message, now can you {action}?\n'
             + 'RESPOND TO THIS MESSAGE NOW\n'
         )
