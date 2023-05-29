@@ -17,14 +17,18 @@ $ pip install -r requirements.txt
 ```console
 $ python gpt_reader.py 
 
-usage: gpt_reader.py [-h] [--save | --no-save] [--display | --no-display] [--path PATH] [--action ACTION] [--size SIZE]
+usage: gpt_reader.py [-h] [--input {stdin,file}] [--save_path SAVE_PATH] [--input_path INPUT_PATH] [--display | --no-display]
+                     [--action ACTION] [--size SIZE]
 
 options:
   -h, --help            show this help message and exit
-  --save, --no-save     save all the messages to <filename.gptr> (default: False)
+  --input {stdin,file}  decide where to take input from (default: stdin)
+  --save_path SAVE_PATH
+                        if specified saves all messages to a given path (default: )
+  --input_path INPUT_PATH
+                        path to the file, required if --input=file (default: )
   --display, --no-display
                         display messages while iterating through them (default: False)
-  --path PATH           path to the file (default: )
   --action ACTION       action for ChatGPT to perform after sending all messages (default: summarize all text)
   --size SIZE           size of a single message (default: 4000)
 ```
