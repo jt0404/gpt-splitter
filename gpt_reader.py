@@ -17,7 +17,7 @@ def prepare_parser():
                         default='',
                         type=str)
     parser.add_argument('--input_path', 
-                        help='path to the file, required if --input=file', 
+                        help='path to the file, required if --input=file or --chunked', 
                         default='',
                         type=str)
     parser.add_argument('--display', 
@@ -33,13 +33,19 @@ def prepare_parser():
                         help='size of a single message', 
                         default=4000,
                         type=int)
+    parser.add_argument('--chunked',
+                        help='if specified copies all messages prepared by this program from --input_path',
+                        action=argparse.BooleanOptionalAction,
+                        default=False,
+                        type=bool)
 
     return parser
 
 
 def read_input_file(path):
     try:
-        return open(path, 'r').read()
+        with open(path, 'r') as f:
+            return f.read()
     except Exception as e:
         print(e)
         sys.exit(4)
@@ -104,6 +110,7 @@ def copy_to_clipboard(msg, msg_idx):
 
 def wait_for_key(msg_idx):
     print(f'Press \'c\' to copy MESSAGE {msg_idx} to clipboard and go to the next message')
+    print('Press \'n\' go to the next message')
     print('Press \'q\' to exit')
     return input('Your key: ')
 
@@ -128,8 +135,10 @@ def process_text(text, action, size, display, save_path):
 
         key = wait_for_key(msg_idx)
 
-        if key == 'c':
-            copy_to_clipboard(msg, msg_idx)
+        if key in ['c', 'n']:
+            if key == 'c':
+                copy_to_clipboard(msg, msg_idx)
+
             write_file(f, msg, msg_idx, save, save_path)
 
             if last_msg:
@@ -153,6 +162,46 @@ def process_text(text, action, size, display, save_path):
         f.close()
 
 
+def chunked_search(text, i, j, msg_idx):
+    s = text.find(f'==================== MESSAGE {msg_idx} ====================\n', i, j)
+    e = text.find(f'==================== MESSAGE {msg_idx + 1} ====================\n', i, j)
+
+    if s == -1:
+        s = text.find(f'==================== MESSAGE {msg_idx} -> LAST ====================\n', i, j)
+        e = len(text) 
+    elif e == -1:
+        e = text.find(f'==================== MESSAGE {msg_idx + 1} -> LAST ====================\n', i, j)
+
+    return s, e
+
+
+def chunked(text, display):
+    msg_idx = 0
+    s, e = chunked_search(text, 0, len(text), 0)
+    msg = text[s:e]
+
+    while True:
+        display_msg(display, msg)
+
+        key = wait_for_key(msg_idx)
+
+        if key in ['c', 'n']:
+            if key == 'c':
+                copy_to_clipboard(msg, msg_idx)
+
+            if e == len(text):
+                break
+
+            msg_idx += 1
+            s, e = chunked_search(text, e, len(text), msg_idx)
+            msg = text[s:e]
+        elif key == 'q':
+            print('\nExiting')
+            break
+        else:
+            print('\nUnrecognized key')
+
+
 if __name__ == '__main__':
     parser = prepare_parser()
 
@@ -170,7 +219,10 @@ if __name__ == '__main__':
             print('ERROR: Input path not provided\n')
             parser.print_help()
             sys.exit(2)
-        process_text(read_input_file(args.input_path), args.action, args.size, args.display, args.save_path)
+        if args.chunked:
+            chunked(read_input_file(args.input_path), args.display)
+        else:
+            process_text(read_input_file(args.input_path), args.action, args.size, args.display, args.save_path)
     else:
         print('ERROR: Unrecognized argument\n')
         parser.print_help()
