@@ -15,7 +15,7 @@ $ pip install -r requirements.txt
 ```
 
 ```console
-$ python gpt_reader.py 
+$ python gpt_splitter.py 
 
 usage: gpt_splitter.py [-h] [--input {stdin,file}] [--save_path SAVE_PATH] [--input_path INPUT_PATH] [--display | --no-display]
                        [--action ACTION] [--size SIZE] [--splitted | --no-splitted]
