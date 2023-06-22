@@ -48,7 +48,7 @@ def read_input_file(path):
             return f.read()
     except Exception as e:
         print(e)
-        sys.exit(4)
+        sys.exit(1)
 
 
 def open_output_file(save, save_path):
@@ -218,7 +218,7 @@ if __name__ == '__main__':
         if args.input_path == '':
             print('ERROR: Input path not provided\n')
             parser.print_help()
-            sys.exit(2)
+            sys.exit(1)
         if args.splitted:
             splitted(read_input_file(args.input_path), args.display)
         else:
@@ -226,6 +226,6 @@ if __name__ == '__main__':
     else:
         print('ERROR: Unrecognized `input` argument\n')
         parser.print_help()
-        sys.exit(3)
+        sys.exit(1)
 
 
